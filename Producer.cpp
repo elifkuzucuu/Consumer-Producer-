@@ -5,50 +5,37 @@
 
 #include "Producer.h"
 
-QMutex producerMutex;
 
-void Producer::write_Number_to_Buffer(QList<int> &buffer)
+
+void Producer::writeNumberToBuffer(QList<int> &buffer)
 {
-    int i,randomNumber,counter=0;
-
+    int i , randomNumber;
+    QMutex m_locker;
     while (1)
     {
-        for (i = 0 ; i < 10 ; i++)
-        {
-            if (buffer[i] == -1)
-                break;
-            else
-            {
-                counter++;
-            }
-        }
+        QMutexLocker tLocker (&m_locker);
 
-        if (i == 10)
-        {
-            i--;
-        }
+        randomNumber = qrand() % 50;
+        buffer << randomNumber;
+        qDebug() << "Producer " << randomNumber << " sayisini buffera yazdi." << endl;
 
-
-        if (counter == 10)
+        if (buffer.count() == 10)
         {
             qDebug() << "Buffer is full." << endl;
 
         }
 
-
-        else
-        {
-            counter = 0;
-            producerMutex.lock();
-            randomNumber = qrand() % 50;
-            buffer[i] = randomNumber;
-            qDebug() << "Producer " << buffer[i] << " sayisini buffera yazdi." << endl;
-        }
-
-        producerMutex.unlock();
         QThread::sleep(2);
+
     }
 }
+
+
+
+
+
+
+
 
 
 
