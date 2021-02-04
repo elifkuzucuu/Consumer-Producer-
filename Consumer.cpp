@@ -4,35 +4,28 @@
 
 #include "Consumer.h"
 
-QMutex consumerMutex;
-
-void Consumer::get_Number(QList<int> &buffer)
+void Consumer::getNumberFromBuffer(QList<int> &buffer)
 {
     int i , j;
+    QMutex m_locker;
 
     while (1)
     {
-        consumerMutex.lock();
-        for (i = 0 ; i < 10 ; i++)
-        {
-            if (buffer[i] != -1)
-            {
-                qDebug() << "Consumer class " << buffer[i] << " sayisini aldi. 2 ile carpti: " << buffer[i]*2 << endl;
-                buffer[i] = -1;
 
-                for (j = i+1 ; j < 10 ; j++)
-                {
-                    buffer[i] = buffer[j];
-                    i++;
-                    buffer[j] = -1;
-                }
-                break;
-            }
+        QMutexLocker tLocker (&m_locker);
+        qDebug() << buffer.count();
+        if (buffer.count() > 0)
+        {
+
+            qDebug() << "Consumer class " << buffer[0] << " sayisini aldi. 2 ile carpti: " << buffer[0] * 2 << endl;
+            buffer.removeFirst();
         }
-        consumerMutex.unlock();
-        QThread::sleep(6);
+
+        QThread::sleep(4);
     }
+
 }
+
 
 
 
