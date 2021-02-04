@@ -8,8 +8,9 @@ class Producer :  public QObject
     Q_OBJECT
 
 public slots:
-    void write_Number_to_Buffer(QList<int> &buffer);
+    void writeNumberToBuffer(QList<int> &buffer);
 
 };
 
 #endif // PRODUCER_H
+
