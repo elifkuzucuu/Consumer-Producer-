@@ -1,45 +1,15 @@
-#include <QDebug>
-#include <QList>
-#include <QMutex>
-#include <QThread>
+#ifndef PRODUCER_H
+#define PRODUCER_H
 
-#include "Producer.h"
+#include <QObject>
 
-
-
-void Producer::writeNumberToBuffer(QList<int> &buffer)
+class Producer :  public QObject
 {
-    int i , randomNumber;
-    QMutex m_locker;
-    while (1)
-    {
-        QMutexLocker tLocker (&m_locker);
+    Q_OBJECT
 
-        randomNumber = qrand() % 50;
-        buffer << randomNumber;
-        qDebug() << "Producer " << randomNumber << " sayisini buffera yazdi." << endl;
+public slots:
+    void writeNumberToBuffer(QList<int> &buffer);
 
-        if (buffer.count() == 10)
-        {
-            qDebug() << "Buffer is full." << endl;
+};
 
-        }
-
-        QThread::sleep(2);
-
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif // PRODUCER_H
