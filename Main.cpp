@@ -2,6 +2,7 @@
 #include <QThread>
 #include <QDebug>
 #include <QObject>
+#include <QList>
 
 #include "Consumer.h"
 #include "Producer.h"
@@ -13,19 +14,18 @@ int main(int argc, char *argv[])
 
     QThread threadProducer;
     QThread threadConsumer;
-    QList <int> buffer = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-
+    QList <int> buffer;
 
     QObject::connect(&threadConsumer, &QThread::started, [&](){
         Consumer tConsumer;
-        tConsumer.get_Number(buffer);
+        tConsumer.getNumberFromBuffer(buffer);
     });
 
 
 
     QObject::connect(&threadProducer, &QThread::started, [&](){
         Producer tProducer;
-        tProducer.write_Number_to_Buffer(buffer);
+        tProducer.writeNumberToBuffer(buffer);
 
     });
 
@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     threadProducer.setObjectName("ProducerThread");
 
 
-    qDebug() << threadConsumer.thread()->currentThreadId();
-    qDebug() << threadProducer.thread()->currentThreadId();
+//    qDebug() << threadConsumer.thread()->currentThreadId();
+//    qDebug() << threadProducer.thread()->currentThreadId();
 
 
     return a.exec();
