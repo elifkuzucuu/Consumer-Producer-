@@ -8,7 +8,7 @@ class Consumer : public QObject
     Q_OBJECT
 
 public slots:
-    void get_Number(QList<int> &buffer);
+    void getNumberFromBuffer(QList<int> &buffer);
 
 };
 
